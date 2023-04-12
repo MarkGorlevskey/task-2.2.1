@@ -5,6 +5,7 @@ import hiber.model.User;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -12,8 +13,11 @@ import java.util.List;
 @Repository
 public class UserDaoImp implements UserDao {
 
-   @Autowired
-   private SessionFactory sessionFactory;
+   private final SessionFactory sessionFactory;
+
+   public UserDaoImp(SessionFactory sessionFactory) {
+      this.sessionFactory = sessionFactory;
+   }
 
 
    @Override
@@ -22,6 +26,7 @@ public class UserDaoImp implements UserDao {
    }
 
    @Override
+   @Transactional(readOnly = true)
    @SuppressWarnings("unchecked")
    public User getUserByCar(String model, int series) {
       return (User) sessionFactory
@@ -45,6 +50,7 @@ public class UserDaoImp implements UserDao {
    }
 
    @Override
+   @Transactional(readOnly = true)
    public Car getCar(int id) {
       return sessionFactory.getCurrentSession().get(Car.class,id);
    }
