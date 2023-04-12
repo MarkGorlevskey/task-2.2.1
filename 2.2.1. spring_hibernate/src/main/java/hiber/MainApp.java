@@ -1,6 +1,7 @@
 package hiber;
 
 import hiber.config.AppConfig;
+import hiber.model.Car;
 import hiber.model.User;
 import hiber.service.UserService;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -10,23 +11,22 @@ import java.util.List;
 
 public class MainApp {
    public static void main(String[] args) throws SQLException {
-      AnnotationConfigApplicationContext context = 
-            new AnnotationConfigApplicationContext(AppConfig.class);
+      AnnotationConfigApplicationContext context =
+              new AnnotationConfigApplicationContext(AppConfig.class);
 
       UserService userService = context.getBean(UserService.class);
+      userService.add(new User("Vladimir", "Putin", "kremlin_Moscow@russia.ru", new Car("lada kalina", 1337)));
+      userService.add(new User("Boris", "Elcin", "BE@postUSSR.ru", new Car("VAZ 2107", 13321)));
+      userService.add(new User("Iosif", "Stalin", "politBuroInRedSquare", new Car("T-34", 34)));
+      userService.add(new User("Petr", "Romanov", "shipLover@port.ne", new Car("Fregat", 512)));
+      userService.add(new User("Ivan", "Grozniy(Rurikovich)", "GrozniyVan@KazanIsRUS.ru", new Car("Loshad' Marusya", 1)));
 
-      userService.add(new User("User1", "Lastname1", "user1@mail.ru"));
-      userService.add(new User("User2", "Lastname2", "user2@mail.ru"));
-      userService.add(new User("User3", "Lastname3", "user3@mail.ru"));
-      userService.add(new User("User4", "Lastname4", "user4@mail.ru"));
+      userService.listUsers().forEach(System.out::println);
 
-      List<User> users = userService.listUsers();
-      for (User user : users) {
-         System.out.println("Id = "+user.getId());
-         System.out.println("First Name = "+user.getFirstName());
-         System.out.println("Last Name = "+user.getLastName());
-         System.out.println("Email = "+user.getEmail());
-         System.out.println();
+      try {
+         System.out.println(userService.getUserByCar("T-34", 34));
+      } catch (org.hibernate.exception.DataException e) {
+         System.out.println("Таких несколько!");
       }
 
       context.close();
