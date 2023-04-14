@@ -31,13 +31,13 @@ public class UserServiceImp implements UserService {
       userDao.addCar(car);
    }
 
-   @Transactional
+   @Transactional(readOnly = true)
    @Override
    public Car getCar(int id) {
       return userDao.getCar(id);
    }
 
-   @Transactional
+   @Transactional(readOnly = true)
    @Override
    public User getUserByCar(String model, int series) {
       return userDao.getUserByCar(model, series);

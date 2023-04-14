@@ -26,7 +26,6 @@ public class UserDaoImp implements UserDao {
    }
 
    @Override
-   @Transactional(readOnly = true)
    @SuppressWarnings("unchecked")
    public User getUserByCar(String model, int series) {
       return (User) sessionFactory
@@ -50,7 +49,6 @@ public class UserDaoImp implements UserDao {
    }
 
    @Override
-   @Transactional(readOnly = true)
    public Car getCar(int id) {
       return sessionFactory.getCurrentSession().get(Car.class,id);
    }
